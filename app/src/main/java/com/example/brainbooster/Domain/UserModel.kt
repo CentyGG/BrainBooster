@@ -1,8 +1,8 @@
 package com.example.brainbooster.Domain
 
 data class UserModel(
-    val id:Int,
     val name :String,
-    val pic:String,
-    val score: Int
+    val image_id:String,
+    val score1: Int,
+    val score2: Int
 )

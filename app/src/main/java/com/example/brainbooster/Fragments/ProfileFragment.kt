@@ -22,7 +22,11 @@ class ProfileFragment : Fragment() {
     ): View? {
         binding = FragmentProfileBinding.inflate(inflater,container,false)
         val view = binding.root
-
+        binding.playerAvatar.setOnClickListener {
+            val fm = childFragmentManager
+            val dialog = ImageSelectionDialogFragment()
+            dialog.show(fm, "image_selection_dialog")
+        }
         binding.menu.setItemSelected(R.id.profile)
         binding.menu.setOnItemSelectedListener {
             if (it==R.id.home)

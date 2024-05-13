@@ -6,13 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.brainbooster.R
+import com.example.brainbooster.ViewModel.LoginViewModel
+import com.example.brainbooster.ViewModel.RegistrationViewModel
 import com.example.brainbooster.databinding.FragmentLoginBinding
 
 
 class LoginFragment : Fragment() {
-
+    private lateinit var loginViewModel: LoginViewModel
     private var _binding:FragmentLoginBinding?=null
     private val binding get() = _binding!!;
 
@@ -26,11 +29,16 @@ class LoginFragment : Fragment() {
     ): View? {
         _binding = FragmentLoginBinding.inflate(inflater,container,false)
         val view = binding.root;
+        loginViewModel = ViewModelProvider(requireActivity())[LoginViewModel::class.java]
+
         binding.loginButton.setOnClickListener(object : View.OnClickListener{
             override fun onClick(p0: View?) {
                 if (p0 != null) {
                     if (p0 != null) {
-                        p0.findNavController().navigate(R.id.action_loginFragment2_to_mainMenuFragment)
+                        loginViewModel.setEmail(binding.username.text.toString())
+                        loginViewModel.setPassword(binding.password.text.toString())
+                        if (loginViewModel.login(context!!))
+                            p0.findNavController().navigate(R.id.action_loginFragment2_to_mainMenuFragment)
                     }
                 }
 

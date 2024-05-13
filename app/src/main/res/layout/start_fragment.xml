@@ -11,10 +11,10 @@
         android:id="@+id/animationView"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="150dp"
         app:lottie_autoPlay="true"
         app:lottie_loop="false"
-        app:lottie_rawRes="@raw/anim" />
+        app:lottie_rawRes="@raw/brain" />
 
     <ImageView
 
@@ -22,7 +22,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="350dp"
-        android:src="@drawable/image" />
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/brain_booster_title" />
 
 
 </FrameLayout>

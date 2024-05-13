@@ -1,11 +1,13 @@
 package com.example.brainbooster.Fragments
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import com.example.brainbooster.Activity.MemoryGameActivity
 import com.example.brainbooster.R
 import com.example.brainbooster.databinding.FragmentMainMenuBinding
 
@@ -31,9 +33,18 @@ class MainMenuFragment : Fragment() {
             if (it == R.id.leaderboard) {
                 findNavController().navigate(R.id.action_mainMenuFragment_to_leaderboardFragment);
             }
-            if (it == R.id.menu) {
+            if (it == R.id.profile) {
                 findNavController().navigate(R.id.action_mainMenuFragment_to_profileFragment);
             }
+        }
+//        binding.mathGame.setOnClickListener {
+//            val intent = Intent(requireContext(), MathGameActivity::class.java)
+//            startActivity(intent)
+//        }
+
+        binding.memoryGameB.setOnClickListener {
+            val intent = Intent(requireContext(), MemoryGameActivity::class.java)
+            startActivity(intent)
         }
 
 

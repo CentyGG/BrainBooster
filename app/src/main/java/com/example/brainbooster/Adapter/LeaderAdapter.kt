@@ -24,13 +24,13 @@ class LeaderAdapter : RecyclerView.Adapter<LeaderAdapter.ViewHolder>() {
         binding.titleTxt.text = differ.currentList[position].name
 
         val drawableResourceId:Int = binding.root.resources.getIdentifier(
-            differ.currentList[position].pic,
+            differ.currentList[position].image_id,
             "drawable",binding.root.context.packageName
 
         )
         Glide.with(binding.root.context).load(drawableResourceId).into(binding.pic)
         binding.rowTxt.text=(position+4).toString()
-        binding.scoreTxt.text=differ.currentList[position].score.toString()
+        binding.scoreTxt.text=differ.currentList[position].score1.toString()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -40,7 +40,7 @@ class LeaderAdapter : RecyclerView.Adapter<LeaderAdapter.ViewHolder>() {
     }
     private val differCallback = object : DiffUtil.ItemCallback<UserModel>(){
         override fun areItemsTheSame(oldItem: UserModel, newItem: UserModel): Boolean {
-            return oldItem.id==newItem.id
+            return oldItem.name==newItem.name
         }
 
         override fun areContentsTheSame(oldItem: UserModel, newItem: UserModel): Boolean {

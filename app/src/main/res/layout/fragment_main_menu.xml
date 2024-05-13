@@ -44,13 +44,14 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="145dp"
+                android:layout_height="170dp"
                 android:layout_margin="24dp"
                 android:orientation="horizontal">
 
                 <LinearLayout
+                    android:id="@+id/math_game"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:layout_weight="0.5"
                     android:background="@drawable/blue_background"
@@ -61,20 +62,23 @@
                         android:id="@+id/singleplayer_icon"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_baseline_person_24" />
+                        android:src="@drawable/math" />
 
                     <TextView
-                        android:id="@+id/text_singleplayer"
+                        android:id="@+id/text_math"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
-                        android:text="SinglePlayer"
+                        android:layout_marginTop="16dp"
+                        android:text="Math"
+                        android:paddingBottom="15dp"
+                        android:textColorHint="@color/black"
                         android:textAlignment="center"
-                        android:textColor="@color/white"
-                        android:textSize="14sp" />
+                        android:textColor="@color/grey_grey"
+                        android:textSize="20sp" />
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/memoryGame_b"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="8dp"
@@ -88,18 +92,20 @@
                         android:id="@+id/multiplayer_icon"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_baseline_person_24"
-                        app:srcCompat="@drawable/ic_baseline_people_alt_24" />
+                        android:src="@drawable/brain_icon" />
 
                     <TextView
                         android:id="@+id/text_multiplayer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
-                        android:text="MultiPlayer"
+                        android:layout_marginTop="16dp"
+                        android:text="Memory"
+                        android:paddingBottom="15dp"
+                        android:textColorHint="@color/black"
                         android:textAlignment="center"
-                        android:textColor="@color/white"
-                        android:textSize="14sp" />
+                        android:textColor="@color/grey_grey"
+                        android:textSize="20sp"
+                        />
                 </LinearLayout>
             </LinearLayout>
 
