@@ -6,9 +6,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.brainbooster.Activity.MemoryGameActivity
 import com.example.brainbooster.R
+import com.example.brainbooster.ViewModel.MenuViewModel
 import com.example.brainbooster.databinding.FragmentMainMenuBinding
 
 
@@ -27,7 +29,8 @@ class MainMenuFragment : Fragment() {
     ): View? {
         binding = FragmentMainMenuBinding.inflate(inflater,container,false)
         val view = binding.root
-
+        val menuViewModel = ViewModelProvider(requireActivity())[MenuViewModel::class.java]
+        menuViewModel.getPerson(menuViewModel.getUid()!!)
         binding.menu.setItemSelected(R.id.home)
         binding.menu.setOnItemSelectedListener {
             if (it == R.id.leaderboard) {
@@ -37,10 +40,7 @@ class MainMenuFragment : Fragment() {
                 findNavController().navigate(R.id.action_mainMenuFragment_to_profileFragment);
             }
         }
-//        binding.mathGame.setOnClickListener {
-//            val intent = Intent(requireContext(), MathGameActivity::class.java)
-//            startActivity(intent)
-//        }
+        binding.nickname.text = menuViewModel.getNickname()
 
         binding.memoryGameB.setOnClickListener {
             val intent = Intent(requireContext(), MemoryGameActivity::class.java)

@@ -39,7 +39,8 @@ class RegistrationFragment : Fragment() {
                         registrationViewModel.setEmail(binding.email.text.toString())
                         registrationViewModel.setNickName(binding.nickname.text.toString())
                         registrationViewModel.setPassword(binding.password.text.toString())
-                        if (registrationViewModel.registerUser(context!!))
+                        registrationViewModel.registerUser(context!!)
+                        if (registrationViewModel.getStatus()==true)
                             p0.findNavController().navigate(R.id.action_registrationFragment2_to_mainMenuFragment)
                     }
                 }

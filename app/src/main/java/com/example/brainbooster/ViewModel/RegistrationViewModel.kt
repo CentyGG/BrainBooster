@@ -21,11 +21,14 @@ class RegistrationViewModel : ViewModel() {
     private lateinit var auth: FirebaseAuth
     private lateinit var sharedPreferences: SharedPreferences
     private val db = Firebase.firestore
+    private val registrationStatus = MutableLiveData<Boolean>()
 
     init {
         auth = Firebase.auth
     }
-
+    fun getStatus(): Boolean? {
+        return registrationStatus.value
+    }
     fun setNickName(nickname: String) {
         this.nickName.value = nickname
     }
@@ -46,10 +49,10 @@ class RegistrationViewModel : ViewModel() {
     fun getPassword():String{
         return password_.value.toString()
     }
-    fun registerUser(context : Context) : Boolean {
+    fun registerUser(context: Context) {
         val email = getEmail()
         val password = getPassword()
-        var permission = false
+
         if (email != null && password != null) {
             auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
@@ -57,18 +60,19 @@ class RegistrationViewModel : ViewModel() {
                         Log.d(TAG, "createUserWithEmailAndPassword: success")
                         val user = auth.currentUser
                         val uid: String? = user?.uid
-                        saveUserUid(context,uid)
+                        saveUserUid(context, uid)
                         createUser(uid)
                         Log.d(TAG, "User UID: $uid")
-                        permission = true
+                        registrationStatus.value = true // Успешная регистрация
                     } else {
-                        Toast.makeText(context,"Wrong email or easy password",Toast.LENGTH_LONG).show()
+                        Toast.makeText(context, "Wrong email or easy password", Toast.LENGTH_LONG).show()
+                        registrationStatus.value = false // Ошибка при регистрации
                     }
                 }
         } else {
-            Toast.makeText(context,"Email or password is null.",Toast.LENGTH_LONG).show()
+            Toast.makeText(context, "Email or password is null.", Toast.LENGTH_LONG).show()
+            registrationStatus.value = false
         }
-        return  permission
     }
     private fun createUser(uid: String?) {
         val user = hashMapOf(

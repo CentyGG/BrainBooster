@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.brainbooster.R
 import com.example.brainbooster.ViewModel.LoginViewModel
+import com.example.brainbooster.ViewModel.MenuViewModel
 import com.example.brainbooster.ViewModel.RegistrationViewModel
 import com.example.brainbooster.databinding.FragmentLoginBinding
 
@@ -30,14 +31,15 @@ class LoginFragment : Fragment() {
         _binding = FragmentLoginBinding.inflate(inflater,container,false)
         val view = binding.root;
         loginViewModel = ViewModelProvider(requireActivity())[LoginViewModel::class.java]
-
+        val menuViewModel = ViewModelProvider(requireActivity())[MenuViewModel::class.java]
         binding.loginButton.setOnClickListener(object : View.OnClickListener{
             override fun onClick(p0: View?) {
                 if (p0 != null) {
                     if (p0 != null) {
                         loginViewModel.setEmail(binding.username.text.toString())
                         loginViewModel.setPassword(binding.password.text.toString())
-                        if (loginViewModel.login(context!!))
+                        loginViewModel.login(context!!)
+                        if (loginViewModel.getStatus()==true)
                             p0.findNavController().navigate(R.id.action_loginFragment2_to_mainMenuFragment)
                     }
                 }

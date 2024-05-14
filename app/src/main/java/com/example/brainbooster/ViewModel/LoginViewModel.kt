@@ -16,8 +16,12 @@ private lateinit var sharedPreferences: SharedPreferences
 class LoginViewModel: ViewModel() {
     private val email_ = MutableLiveData<String>()
     private val password_ = MutableLiveData<String>()
+    private val loginStatus = MutableLiveData<Boolean>()
     init {
         auth = Firebase.auth
+    }
+    fun getStatus():Boolean?{
+        return loginStatus.value
     }
     fun setEmail(username: String) {
         this.email_.value = username
@@ -32,10 +36,10 @@ class LoginViewModel: ViewModel() {
     fun getPassword():String{
         return password_.value.toString()
     }
-    fun login(context: Context): Boolean{
-        var permission = false
+    fun login(context: Context) {
         var email = getEmail()
         var password = getPassword()
+
         if (email != null && password != null) {
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
@@ -44,19 +48,16 @@ class LoginViewModel: ViewModel() {
                         val user = auth.currentUser
                         val uid: String? = user?.uid
                         saveUserUid(context, uid)
-                        permission = true
+                        loginStatus.value = true // Успешный вход
                     } else {
-
-                        Toast.makeText(context, "Wrong email or wrong password", Toast.LENGTH_LONG)
-                            .show()
-
+                        Toast.makeText(context, "Wrong email or wrong password", Toast.LENGTH_LONG).show()
+                        loginStatus.value = false // Ошибка при входе
                     }
                 }
-
         } else {
             Toast.makeText(context, "Email or password is null.", Toast.LENGTH_LONG).show()
+            loginStatus.value = false // Ошибка при входе
         }
-        return  permission
     }
     private fun saveUserUid(context: Context, uid: String?) {
         sharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)

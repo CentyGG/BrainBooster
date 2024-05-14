@@ -22,9 +22,11 @@ import kotlinx.coroutines.launch
 
 class MemoryGameFragment : Fragment(),View.OnClickListener {
     private lateinit var binding: FragmentMemoryGameBinding
-    private var score = 0
+    private var score: Int = 0
     private var result : String = ""
     private var userAnswer : String = ""
+    private var difficulty =3
+    private var popitka = 1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,12 +39,13 @@ class MemoryGameFragment : Fragment(),View.OnClickListener {
             panel2.setOnClickListener(this@MemoryGameFragment)
             panel3.setOnClickListener(this@MemoryGameFragment)
             panel4.setOnClickListener(this@MemoryGameFragment)
+            panel5.setOnClickListener(this@MemoryGameFragment)
+            panel6.setOnClickListener(this@MemoryGameFragment)
+            panel7.setOnClickListener(this@MemoryGameFragment)
+            panel8.setOnClickListener(this@MemoryGameFragment)
+            panel9.setOnClickListener(this@MemoryGameFragment)
             startGame()
         }
-
-
-
-
         return view
     }
     private fun startGame()
@@ -51,11 +54,11 @@ class MemoryGameFragment : Fragment(),View.OnClickListener {
         userAnswer = ""
         disableButtons()
         lifecycleScope.launch {
-            val round = (3 .. 5).random()
+            val round = difficulty
             repeat(round) {
 
-                delay(400)
-                val randomPanel = (1 .. 4).random()
+                delay(600)
+                val randomPanel = (1 .. 9).random()
                 result += randomPanel
 
                 val panel = when (randomPanel)
@@ -63,7 +66,12 @@ class MemoryGameFragment : Fragment(),View.OnClickListener {
                     1 -> binding.panel1
                     2 -> binding.panel2
                     3 -> binding.panel3
-                    else -> binding.panel4
+                    4 -> binding.panel4
+                    5 -> binding.panel5
+                    6 -> binding.panel6
+                    7 -> binding.panel7
+                    8 -> binding.panel8
+                    else->binding.panel9
                 }
 
                 val drawableYellow =
@@ -105,6 +113,11 @@ class MemoryGameFragment : Fragment(),View.OnClickListener {
                 R.id.panel2 -> "2"
                 R.id.panel3 -> "3"
                 R.id.panel4 -> "4"
+                R.id.panel5 -> "5"
+                R.id.panel6 -> "6"
+                R.id.panel7 -> "7"
+                R.id.panel8 -> "8"
+                R.id.panel9 -> "9"
                 else -> ""
             }
 
@@ -113,6 +126,12 @@ class MemoryGameFragment : Fragment(),View.OnClickListener {
                 Toast.makeText(this@MemoryGameFragment.requireContext(), "W I N :)", Toast.LENGTH_SHORT).show()
                 score+=100
                 binding.tvScore.text = score.toString()
+                popitka+=1
+                if (popitka==4)
+                {
+                    difficulty+=1
+                    popitka=1
+                }
                 startGame()
 
             } else if (userAnswer.length >= result.length) {
@@ -137,17 +156,21 @@ class MemoryGameFragment : Fragment(),View.OnClickListener {
                     }
                 }
                 delay(1000)
-                loseGame(score)
             }
         }
+        loseGame()
     }
 
-    private fun loseGame(score: Int) {
+    private fun loseGame() {
         val alertDialogBuilder = AlertDialog.Builder(requireContext())
         alertDialogBuilder.setTitle("Игра окончена!")
         alertDialogBuilder.setMessage("Вы набрали: $score")
         alertDialogBuilder.setPositiveButton("Заново") { dialog, which ->
             dialog.dismiss()
+            score = 0
+            difficulty=3
+            popitka=1
+            binding.tvScore.text=score.toString()
             startGame()
         }
         alertDialogBuilder.setNegativeButton("Меню") { dialog, which ->
