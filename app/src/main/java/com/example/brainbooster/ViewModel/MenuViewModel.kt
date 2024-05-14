@@ -13,9 +13,9 @@ import com.google.firebase.firestore.firestore
 class MenuViewModel: ViewModel() {
     private var uid = MutableLiveData<String>()
     private var name = MutableLiveData<String>()
-    private var image_id = MutableLiveData<String>()
-    private var score1 = MutableLiveData<Int>()
-    private var score2 = MutableLiveData<Int>()
+    private var imageid = MutableLiveData<String>()
+    private var score_math = MutableLiveData<Int>()
+    private var score_memory = MutableLiveData<Int>()
     fun setUid(uid_:String){
         this.uid.value = uid_
     }
@@ -23,10 +23,11 @@ class MenuViewModel: ViewModel() {
     fun getPerson(uid: String) {
         val db = Firebase.firestore
         val userRef = db.collection("users").document(uid)
-
+        Log.d(TAG, "Attempting to retrieve data for uid: $uid")
         userRef.get()
             .addOnSuccessListener { document ->
-                if (document.exists()) {
+                if (document!=null) {
+                    Log.d(TAG, "Data retrieval successful")
                     val user = document.toObject(UserModel::class.java)
                     user?.let {
                         setNickname(it.name)
@@ -35,11 +36,11 @@ class MenuViewModel: ViewModel() {
                         setScoreMemory(it.score2)
                     }
                 } else {
-
+                    Log.d(TAG, "No such document")
                 }
             }
             .addOnFailureListener { exception ->
-
+                Log.e(TAG, "Error getting user data", exception)
             }
     }
 
@@ -53,22 +54,22 @@ class MenuViewModel: ViewModel() {
         return name.value!!
     }
     fun setImageId(image_id_:String){
-        this.image_id.value = image_id_
+        this.imageid.value = image_id_
     }
     fun getImageId():String{
-        return image_id.value!!
+        return imageid.value!!
     }
     fun setScoreMath(score_math_:Int){
-        this.score1.value = score_math_
+        this.score_math.value = score_math_
     }
     fun getScoreMath():Int{
-        return score1.value!!
+        return score_math.value!!
     }
     fun setScoreMemory(score_memory_: Int){
-        this.score2.value = score_memory_
+        this.score_memory.value = score_memory_
     }
     fun getScoreMemory():Int{
-        return score2.value!!
+        return score_memory.value!!
     }
 
 
