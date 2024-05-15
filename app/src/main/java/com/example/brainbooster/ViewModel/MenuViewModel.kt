@@ -9,15 +9,20 @@ import com.example.brainbooster.Domain.UserModel
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.auth.User
 import com.google.firebase.firestore.firestore
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 class MenuViewModel: ViewModel() {
-    private var uid = MutableLiveData<String>()
+    private var uid_: MutableStateFlow<String?> = MutableStateFlow(null)
     private var name = MutableLiveData<String>()
     private var imageid = MutableLiveData<String>()
     private var score_math = MutableLiveData<Int>()
     private var score_memory = MutableLiveData<Int>()
+    private val _user: MutableStateFlow<UserModel?> = MutableStateFlow(null)
+    val user = _user.asStateFlow()
+    val uid = uid_.asStateFlow()
     fun setUid(uid_:String){
-        this.uid.value = uid_
+        this.uid_.value = uid_
     }
 
     fun getPerson(uid: String) {
@@ -29,12 +34,10 @@ class MenuViewModel: ViewModel() {
                 if (document!=null) {
                     Log.d(TAG, "Data retrieval successful")
                     val user = document.toObject(UserModel::class.java)
-                    user?.let {
-                        setNickname(it.name)
-                        setImageId(it.image_id)
-                        setScoreMath(it.score1)
-                        setScoreMemory(it.score2)
-                    }
+                    _user.value = user
+                    Log.d(TAG, "nickname ${user?.name}")
+                    Log.d(TAG, "score ${user?.score1}")
+                    Log.d(TAG, "image id ${user?.image_id}")
                 } else {
                     Log.d(TAG, "No such document")
                 }
@@ -45,7 +48,7 @@ class MenuViewModel: ViewModel() {
     }
 
     fun getUid():String?{
-        return uid.value
+        return uid_.value
     }
     fun setNickname(nickname_:String){
         this.name.value = nickname_

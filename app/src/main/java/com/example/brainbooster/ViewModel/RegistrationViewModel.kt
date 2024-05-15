@@ -3,14 +3,19 @@ package com.example.brainbooster.ViewModel
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.SharedPreferences
+import android.text.BoringLayout
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.example.brainbooster.Activity.MainActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 
 private lateinit var auth: FirebaseAuth
@@ -21,13 +26,14 @@ class RegistrationViewModel : ViewModel() {
     private lateinit var auth: FirebaseAuth
     private lateinit var sharedPreferences: SharedPreferences
     private val db = Firebase.firestore
-    private val registrationStatus = MutableLiveData<Boolean>()
+    private var registrationStatus : MutableStateFlow<Boolean?> = MutableStateFlow(null)
+    var status = registrationStatus.asStateFlow()
 
     init {
         auth = Firebase.auth
     }
     fun getStatus(): Boolean? {
-        return registrationStatus.value
+        return status.value
     }
     fun setNickName(nickname: String) {
         this.nickName.value = nickname
@@ -96,6 +102,8 @@ class RegistrationViewModel : ViewModel() {
     private fun saveUserUid(context: Context, uid: String?) {
         sharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
         sharedPreferences.edit().putString("UID", uid).apply()
+        val menuViewModel = ViewModelProvider(context as MainActivity)[MenuViewModel::class.java]
+        menuViewModel.setUid(uid!!)
     }
 }
 

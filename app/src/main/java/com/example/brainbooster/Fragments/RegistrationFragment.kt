@@ -6,14 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.get
+import androidx.lifecycle.*
 import androidx.navigation.findNavController
 import com.example.brainbooster.Activity.MainActivity
 import com.example.brainbooster.R
 import com.example.brainbooster.ViewModel.RegistrationViewModel
 import com.example.brainbooster.databinding.FragmentRegistrationBinding
 import com.google.firebase.FirebaseApp
+import kotlinx.coroutines.launch
 
 private lateinit var binding: FragmentRegistrationBinding
 
@@ -40,8 +40,15 @@ class RegistrationFragment : Fragment() {
                         registrationViewModel.setNickName(binding.nickname.text.toString())
                         registrationViewModel.setPassword(binding.password.text.toString())
                         registrationViewModel.registerUser(context!!)
-                        if (registrationViewModel.getStatus()==true)
-                            p0.findNavController().navigate(R.id.action_registrationFragment2_to_mainMenuFragment)
+                        viewLifecycleOwner.lifecycleScope.launch {
+                            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                                registrationViewModel.status.collect {
+                                    if (registrationViewModel.getStatus() == true)
+                                        p0.findNavController()
+                                            .navigate(R.id.action_registrationFragment2_to_mainMenuFragment)
+                                }
+                            }
+                        }
                     }
                 }
             }

@@ -6,12 +6,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.brainbooster.Activity.MemoryGameActivity
 import com.example.brainbooster.R
 import com.example.brainbooster.ViewModel.MenuViewModel
 import com.example.brainbooster.databinding.FragmentMainMenuBinding
+import kotlinx.coroutines.launch
 
 
 private lateinit var binding: FragmentMainMenuBinding
@@ -40,7 +44,13 @@ class MainMenuFragment : Fragment() {
                 findNavController().navigate(R.id.action_mainMenuFragment_to_profileFragment);
             }
         }
-        binding.nickname.text = menuViewModel.getNickname()
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                menuViewModel.user.collect {
+                    binding.nickname.text = menuViewModel.user.value?.name ?: "Default Name"
+                }
+
+            }}
 
         binding.memoryGameB.setOnClickListener {
             val intent = Intent(requireContext(), MemoryGameActivity::class.java)
@@ -48,7 +58,7 @@ class MainMenuFragment : Fragment() {
         }
 
 
-            return view
+        return view
     }
 
 }
