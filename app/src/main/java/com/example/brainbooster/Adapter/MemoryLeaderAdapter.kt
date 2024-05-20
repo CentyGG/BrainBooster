@@ -9,17 +9,15 @@ import com.bumptech.glide.Glide
 import com.example.brainbooster.Domain.UserModel
 import com.example.brainbooster.databinding.ViewholderLeaderboardBinding
 
-
-class LeaderAdapter : RecyclerView.Adapter<LeaderAdapter.ViewHolder>() {
-
+class MemoryLeaderAdapter : RecyclerView.Adapter<MemoryLeaderAdapter.MemoryViewHolder>() {
     private lateinit var binding: ViewholderLeaderboardBinding
 
-    inner class ViewHolder: RecyclerView.ViewHolder(binding.root)
+    inner class MemoryViewHolder: RecyclerView.ViewHolder(binding.root)
 
     override fun getItemCount() =
         differ.currentList.size
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MemoryViewHolder, position: Int) {
         val binding = ViewholderLeaderboardBinding.bind(holder.itemView)
         binding.titleTxt.text = differ.currentList[position].nickname
 
@@ -30,13 +28,13 @@ class LeaderAdapter : RecyclerView.Adapter<LeaderAdapter.ViewHolder>() {
         )
         Glide.with(binding.root.context).load(drawableResourceId).into(binding.pic)
         binding.rowTxt.text=(position+4).toString()
-        binding.scoreTxt.text=differ.currentList[position].score_math.toString()
+        binding.scoreTxt.text=differ.currentList[position].score_memory.toString()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MemoryViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-            binding = ViewholderLeaderboardBinding.inflate(inflater,parent,false)
-        return ViewHolder()
+        binding = ViewholderLeaderboardBinding.inflate(inflater,parent,false)
+        return MemoryViewHolder()
     }
     private val differCallback = object : DiffUtil.ItemCallback<UserModel>(){
         override fun areItemsTheSame(oldItem: UserModel, newItem: UserModel): Boolean {
@@ -48,6 +46,5 @@ class LeaderAdapter : RecyclerView.Adapter<LeaderAdapter.ViewHolder>() {
         }
     }
     val differ = AsyncListDiffer(this,differCallback)
-
 
 }

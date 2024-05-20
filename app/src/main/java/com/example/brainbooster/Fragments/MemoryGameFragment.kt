@@ -2,8 +2,10 @@ package com.example.brainbooster.Fragments
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,9 +14,12 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.view.forEach
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.brainbooster.Activity.MainActivity
 import com.example.brainbooster.R
+import com.example.brainbooster.ViewModel.MenuViewModel
 import com.example.brainbooster.databinding.FragmentMemoryGameBinding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -27,6 +32,7 @@ class MemoryGameFragment : Fragment(),View.OnClickListener {
     private var userAnswer : String = ""
     private var difficulty =3
     private var popitka = 1
+    private lateinit var menuViewModel: MenuViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,6 +40,7 @@ class MemoryGameFragment : Fragment(),View.OnClickListener {
     ): View? {
         binding = FragmentMemoryGameBinding.inflate(inflater,container,false)
         var view = binding.root
+        menuViewModel = ViewModelProvider(requireActivity())[MenuViewModel::class.java]
         binding.apply {
             panel1.setOnClickListener(this@MemoryGameFragment)
             panel2.setOnClickListener(this@MemoryGameFragment)
@@ -123,7 +130,6 @@ class MemoryGameFragment : Fragment(),View.OnClickListener {
 
             if (userAnswer == result) {
 
-                Toast.makeText(this@MemoryGameFragment.requireContext(), "W I N :)", Toast.LENGTH_SHORT).show()
                 score+=100
                 binding.tvScore.text = score.toString()
                 popitka+=1
@@ -162,6 +168,10 @@ class MemoryGameFragment : Fragment(),View.OnClickListener {
     }
 
     private fun loseGame() {
+        if (menuViewModel.getScoreMemory()< score) {
+            menuViewModel.setScoreMemory(score)
+            menuViewModel.sendData(requireContext())
+        }
         val alertDialogBuilder = AlertDialog.Builder(requireContext())
         alertDialogBuilder.setTitle("Игра окончена!")
         alertDialogBuilder.setMessage("Вы набрали: $score")
@@ -174,11 +184,8 @@ class MemoryGameFragment : Fragment(),View.OnClickListener {
             startGame()
         }
         alertDialogBuilder.setNegativeButton("Меню") { dialog, which ->
-            val intent = Intent()
-            intent.putExtra("score", score)
-            activity?.setResult(Activity.RESULT_OK, intent)
-            activity?.finish()
             dialog.dismiss()
+            findNavController().navigate(R.id.action_memoryGameFragment2_to_mainMenuFragment)
         }
 
         val dialog = alertDialogBuilder.create()

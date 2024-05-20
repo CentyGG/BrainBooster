@@ -6,6 +6,4 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class MainActivityViewModel : ViewModel() {
-    val id = MutableLiveData<String>()
-
 }

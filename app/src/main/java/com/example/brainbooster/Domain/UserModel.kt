@@ -3,10 +3,11 @@ package com.example.brainbooster.Domain
 import java.lang.reflect.Constructor
 
 data class UserModel(
-    val name: String = "",
-    val image_id: String = "",
-    val score1: Int = 0,
-    val score2: Int = 0
+    var imageid: String = "",
+    val nickname: String = "",
+    val score_math: Int = 0,
+    var score_memory: Int = 0
 ) {
+
     constructor() : this("", "", 0, 0)
 }

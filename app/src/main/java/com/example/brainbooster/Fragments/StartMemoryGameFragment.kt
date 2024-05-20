@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.brainbooster.R
 import com.example.brainbooster.ViewModel.MemoryStartViewModel
 import com.example.brainbooster.ViewModel.StartViewModel
@@ -27,10 +28,10 @@ class StartMemoryGameFragment : Fragment() {
             startViewModel.start(this)
         }
         binding.info.setOnClickListener{
-            startViewModel.info(context!!)
+            startViewModel.info(requireContext())
         }
         binding.backToMenu.setOnClickListener{
-            requireActivity().finish()
+            findNavController().navigate(R.id.action_startMemoryGameFragment2_to_mainMenuFragment)
         }
 
 

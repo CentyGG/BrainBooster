@@ -13,7 +13,11 @@ import com.example.brainbooster.R
 
 class ImageSelectionDialogFragment : DialogFragment() {
     private lateinit var recyclerView: RecyclerView
-    private val imageAdapter: ImageAdapter by lazy { ImageAdapter(requireContext()) }
+    private val imageAdapter: ImageAdapter by lazy { ImageAdapter(requireContext()) { imageResourceId ->
+        onImageSelectedListener?.invoke(imageResourceId.toString())
+        dismiss()
+    } }
+    var onImageSelectedListener: ((String) -> Unit)? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.dialog_image_selection, container, false)
@@ -22,6 +26,9 @@ class ImageSelectionDialogFragment : DialogFragment() {
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
         recyclerView.adapter = imageAdapter
 
+
+
         return view
     }
+
 }

@@ -1,17 +1,20 @@
 package com.example.brainbooster.Adapter
 
+import android.content.ContentValues
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
+import com.example.brainbooster.Activity.MainActivity
 import com.example.brainbooster.R
+import com.example.brainbooster.ViewModel.MenuViewModel
 
 
-
-
-class ImageAdapter(private val context: Context) : RecyclerView.Adapter<ImageAdapter.ViewHolder>() {
+class ImageAdapter(private val context: Context,private val onItemClickListener: ((Int) -> Unit)) : RecyclerView.Adapter<ImageAdapter.ViewHolder>() {
     private val imageList = listOf(
         R.drawable.person1,
         R.drawable.person2,
@@ -32,6 +35,11 @@ class ImageAdapter(private val context: Context) : RecyclerView.Adapter<ImageAda
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val imageResourceId = imageList[position]
         holder.imageView.setImageResource(imageResourceId)
+        holder.itemView.setOnClickListener {
+            onItemClickListener.invoke(position+1)
+            Log.d(ContentValues.TAG, "ImageResourseId ${imageResourceId}")
+            Log.d(ContentValues.TAG, "ImageId person${position+1}")
+        }
     }
 
     override fun getItemCount(): Int {

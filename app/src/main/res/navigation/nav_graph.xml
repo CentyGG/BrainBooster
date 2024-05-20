@@ -39,6 +39,12 @@
         <action
             android:id="@+id/action_mainMenuFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_mainMenuFragment_to_startMathGameFragment2"
+            app:destination="@id/startMathGameFragment2" />
+        <action
+            android:id="@+id/action_mainMenuFragment_to_startMemoryGameFragment2"
+            app:destination="@id/startMemoryGameFragment2" />
     </fragment>
     <fragment
         android:id="@+id/leaderboardFragment"
@@ -74,6 +80,48 @@
             app:destination="@id/loginFragment2" />
         <action
             android:id="@+id/action_startFragment_to_mainMenuFragment"
+            app:destination="@id/mainMenuFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mathGameFragment2"
+        android:name="com.example.brainbooster.Fragments.MathGameFragment"
+        android:label="fragment_math_game"
+        tools:layout="@layout/fragment_math_game" >
+        <action
+            android:id="@+id/action_mathGameFragment2_to_mainMenuFragment"
+            app:destination="@id/mainMenuFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/memoryGameFragment2"
+        android:name="com.example.brainbooster.Fragments.MemoryGameFragment"
+        android:label="fragment_memory_game"
+        tools:layout="@layout/fragment_memory_game" >
+        <action
+            android:id="@+id/action_memoryGameFragment2_to_mainMenuFragment"
+            app:destination="@id/mainMenuFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/startMathGameFragment2"
+        android:name="com.example.brainbooster.Fragments.StartMathGameFragment"
+        android:label="fragment_start_math_game"
+        tools:layout="@layout/fragment_start_math_game" >
+        <action
+            android:id="@+id/action_startMathGameFragment2_to_mathGameFragment2"
+            app:destination="@id/mathGameFragment2" />
+        <action
+            android:id="@+id/action_startMathGameFragment2_to_mainMenuFragment"
+            app:destination="@id/mainMenuFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/startMemoryGameFragment2"
+        android:name="com.example.brainbooster.Fragments.StartMemoryGameFragment"
+        android:label="fragment_start_memory_game"
+        tools:layout="@layout/fragment_start_memory_game" >
+        <action
+            android:id="@+id/action_startMemoryGameFragment2_to_memoryGameFragment2"
+            app:destination="@id/memoryGameFragment2" />
+        <action
+            android:id="@+id/action_startMemoryGameFragment2_to_mainMenuFragment"
             app:destination="@id/mainMenuFragment" />
     </fragment>
 </navigation>

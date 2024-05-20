@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.ViewModelProvider
+import com.example.brainbooster.Fragments.MemoryGameFragment
 import com.example.brainbooster.ViewModel.LoginViewModel
 import com.example.brainbooster.ViewModel.MenuViewModel
 import com.example.brainbooster.databinding.ActivityMainBinding
@@ -26,17 +27,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         menuViewModel = ViewModelProvider(this)[MenuViewModel::class.java]
     }
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == REQUEST_CODE_GAME_FRAGMENT && resultCode == Activity.RESULT_OK) {
-            val score = data?.getIntExtra("score", 0)
-            if (score != null) {
-                menuViewModel.setScoreMemory(score)
-            }
-        }
-    }
-    companion object {
-        const val REQUEST_CODE_GAME_FRAGMENT = 1
-    }
+
 }

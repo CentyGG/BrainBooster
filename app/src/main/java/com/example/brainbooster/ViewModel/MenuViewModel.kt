@@ -1,54 +1,70 @@
 package com.example.brainbooster.ViewModel
 
+import android.content.ContentValues
 import android.content.ContentValues.TAG
+import android.content.Context
 import android.nfc.Tag
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.brainbooster.Controller.UserController
 import com.example.brainbooster.Domain.UserModel
 import com.google.firebase.Firebase
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.auth.User
 import com.google.firebase.firestore.firestore
+import com.google.firebase.firestore.toObject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class MenuViewModel: ViewModel() {
     private var uid_: MutableStateFlow<String?> = MutableStateFlow(null)
     private var name = MutableLiveData<String>()
     private var imageid = MutableLiveData<String>()
     private var score_math = MutableLiveData<Int>()
+    private val userController =UserController()
     private var score_memory = MutableLiveData<Int>()
     private val _user: MutableStateFlow<UserModel?> = MutableStateFlow(null)
     val user = _user.asStateFlow()
     val uid = uid_.asStateFlow()
     fun setUid(uid_:String){
         this.uid_.value = uid_
+        Log.d(TAG, "uid ${uid_}")
+    }
+    fun setUserImageId(image_id_: String){
+        _user.value?.imageid = image_id_
+        Log.d(TAG, "_USER changed")
+
     }
 
-    fun getPerson(uid: String) {
-        val db = Firebase.firestore
-        val userRef = db.collection("users").document(uid)
-        Log.d(TAG, "Attempting to retrieve data for uid: $uid")
-        userRef.get()
-            .addOnSuccessListener { document ->
-                if (document!=null) {
-                    Log.d(TAG, "Data retrieval successful")
-                    val user = document.toObject(UserModel::class.java)
-                    _user.value = user
-                    Log.d(TAG, "nickname ${user?.name}")
-                    Log.d(TAG, "score ${user?.score1}")
-                    Log.d(TAG, "image id ${user?.image_id}")
-                } else {
-                    Log.d(TAG, "No such document")
-                }
+    fun getPerson(contex : Context,uid: String) {
+        viewModelScope.launch {
+            var new_user = userController.getPerson(uid)
+            if (new_user != null) {
+                _user.value = new_user
+                setImageId(new_user!!.imageid)
+                setNickname(new_user!!.nickname)
+                setScoreMath(new_user!!.score_math)
+                setScoreMemory(new_user!!.score_memory)
+            } else {
+                Toast.makeText(contex, "Connection lost.", Toast.LENGTH_LONG).show()
             }
-            .addOnFailureListener { exception ->
-                Log.e(TAG, "Error getting user data", exception)
-            }
+        }
     }
 
-    fun getUid():String?{
-        return uid_.value
+    fun getUid(context: Context):String?{
+        if (uid.value==null) {
+            val sharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+            val uid = sharedPreferences.getString("UID", null)
+            if (!uid.isNullOrBlank()) {
+                setUid(uid)
+            }
+        }
+            return uid_.value
     }
     fun setNickname(nickname_:String){
         this.name.value = nickname_
@@ -57,6 +73,9 @@ class MenuViewModel: ViewModel() {
         return name.value!!
     }
     fun setImageId(image_id_:String){
+        Log.d(ContentValues.TAG, "ID in viewModel ${image_id_}")
+        Log.d(ContentValues.TAG, "user ${user.value}")
+
         this.imageid.value = image_id_
     }
     fun getImageId():String{
@@ -65,15 +84,21 @@ class MenuViewModel: ViewModel() {
     fun setScoreMath(score_math_:Int){
         this.score_math.value = score_math_
     }
-    fun getScoreMath():Int{
-        return score_math.value!!
+    fun getScoreMath(): Int {
+        return score_math.value ?: 0
     }
     fun setScoreMemory(score_memory_: Int){
         this.score_memory.value = score_memory_
     }
-    fun getScoreMemory():Int{
-        return score_memory.value!!
+    fun getScoreMemory(): Int {
+        return score_memory.value ?: 0
     }
-
+    fun sendData(contex: Context) {
+        viewModelScope.launch {
+            var result = userController.sendData(name.value!!, score_math.value!!, score_memory.value!!,imageid.value!!,uid.value!!)
+            if (result==0)
+                Toast.makeText(contex, "Connection lost.", Toast.LENGTH_LONG).show()
+        }
+    }
 
 }
