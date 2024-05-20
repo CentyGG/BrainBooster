@@ -50,6 +50,7 @@
         tools:srcCompat="@drawable/free_icon_font_trophy_3914267" />
 
     <TextView
+
         android:id="@+id/scoreTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

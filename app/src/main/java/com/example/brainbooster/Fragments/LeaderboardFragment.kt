@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -20,6 +21,7 @@ import com.example.brainbooster.ViewModel.LeaderBoardViewModel
 import com.example.brainbooster.ViewModel.MenuViewModel
 import com.example.brainbooster.databinding.FragmentLeaderboardBinding
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -56,19 +58,9 @@ class LeaderboardFragment : Fragment() {
             }
 
         }
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                leaderBoardViewModel.list.collect {
-                    list_from_firestore = leaderBoardViewModel._list.value?: mutableListOf()
-                    binding.buttonMath.setOnClickListener { mathLeaderboard(list_from_firestore) }
-                    binding.buttonMemory.setOnClickListener {
-                        memoryLeaderboard(
-                            list_from_firestore
-                        )
-                    }
-                    }
-                }
-            }
+        leaderBoardViewModel._list.observe(viewLifecycleOwner, Observer { mathLeaderboard(it) })
+        binding.buttonMath.setOnClickListener { mathLeaderboard(leaderBoardViewModel._list.value!!) }
+        binding.buttonMemory.setOnClickListener { memoryLeaderboard(leaderBoardViewModel._list.value!!) }
        return view
     }
     fun memoryLeaderboard(list_1:MutableList<UserModel>) {
@@ -99,9 +91,10 @@ class LeaderboardFragment : Fragment() {
             .load(drawableResourceId3).into(binding.imageViewTop3)
 
         list.removeAt(0)
-        list.removeAt(1)
-        list.removeAt(2)
+        list.removeAt(0)
+        list.removeAt(0)
         memoryLeaderAdapter.differ.submitList(list)
+        binding.leaderView.layoutManager = LinearLayoutManager(context)
         binding.leaderView.adapter = memoryLeaderAdapter
     }
     fun mathLeaderboard(list_1:MutableList<UserModel>) {
@@ -131,10 +124,12 @@ class LeaderboardFragment : Fragment() {
         Glide.with(binding.root.context)
             .load(drawableResourceId3).into(binding.imageViewTop3)
         list.removeAt(0)
-        list.removeAt(1)
-        list.removeAt(2)
+        list.removeAt(0)
+        list.removeAt(0)
         leaderAdapter.differ.submitList(list)
+        binding.leaderView.layoutManager = LinearLayoutManager(context)
         binding.leaderView.adapter = leaderAdapter
+
 
     }
 }

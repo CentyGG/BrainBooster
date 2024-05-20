@@ -64,7 +64,7 @@ class MemoryGameFragment : Fragment(),View.OnClickListener {
             val round = difficulty
             repeat(round) {
 
-                delay(600)
+                delay(450)
                 val randomPanel = (1 .. 9).random()
                 result += randomPanel
 
@@ -86,7 +86,7 @@ class MemoryGameFragment : Fragment(),View.OnClickListener {
                 val drawableDefault =
                     ActivityCompat.getDrawable(this@MemoryGameFragment.requireContext() , R.drawable.btn_state)
                 panel.background = drawableYellow
-                delay(1000)
+                delay(600)
                 panel.background = drawableDefault
 
             }
