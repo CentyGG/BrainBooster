@@ -33,10 +33,6 @@ class LeaderboardFragment : Fragment() {
     private val memoryLeaderAdapter by lazy { MemoryLeaderAdapter() }
     private lateinit var list_from_firestore:MutableList<UserModel>
 
-
-
-
-
     override fun onCreateView(
 
         inflater: LayoutInflater, container: ViewGroup?,
