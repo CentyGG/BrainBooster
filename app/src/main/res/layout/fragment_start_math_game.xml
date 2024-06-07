@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Fragments.StartMathGameFragment">
+    tools:context=".presentation.mathGame.Start.StartMathGameFragment">
 
 
     <androidx.cardview.widget.CardView

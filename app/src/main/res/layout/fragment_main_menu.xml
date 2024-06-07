@@ -5,19 +5,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/grey"
-    tools:context=".Fragments.MainMenuFragment">
+    tools:context=".presentation.mainMenu.MainMenuFragment">
 
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer_layout"
 
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:shimmer_duration="800">
+                <include layout="@layout/shimmer_main_menu_user"/>
+            </com.facebook.shimmer.ShimmerFrameLayout>
             <LinearLayout
+                android:id="@+id/menu_user"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="24dp"

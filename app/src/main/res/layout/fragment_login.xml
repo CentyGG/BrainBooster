@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:gravity="center"
 
-    tools:context=".Fragments.LoginFragment">
+    tools:context=".presentation.login.LoginFragment">
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
                 android:background="@drawable/custom_edittext"
                 android:layout_marginTop="40dp"
                 android:padding="8dp"
-                android:hint="Username"
+                android:hint="Email"
                 android:textColor="@color/black"
                 android:drawableLeft="@drawable/ic_baseline_person_24">
 

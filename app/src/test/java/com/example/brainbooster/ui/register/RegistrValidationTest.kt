@@ -1,6 +1,6 @@
 package com.example.brainbooster.ui.register
 
-import com.example.brainbooster.Validator.RegistrationValidator
+import com.example.brainbooster.presentation.registration.validator.RegistrationValidator
 import org.junit.Test
 import com.google.common.truth.Truth.assertThat
 

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#5d90ad"
-    tools:context=".Fragments.MemoryGameFragment">
+    tools:context=".presentation.memoryGame.MemoryGameFragment">
     <TextView
         android:id="@+id/tvAppName"
         android:layout_width="wrap_content"
